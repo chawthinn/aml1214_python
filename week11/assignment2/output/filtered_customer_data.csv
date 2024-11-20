@@ -70,7 +70,6 @@ CustomerID,Name,Email,PurchaseAmount,PurchaseDate
 139,Customer_139,customer139@example.com,643.0,2023-02-21
 143,Customer_143,customer143@example.com,704.0,2023-12-20
 148,Customer_148,customer148@example.com,590.0,2023-06-27
-149,Customer_149,customer149@example.com,525.0,2024-05-24
 150,Customer_150,customer150@example.com,1112.0,2024-01-27
 151,Customer_151,customer151@example.com,830.0,2024-01-28
 152,Customer_152,customer152@example.com,803.0,2024-03-30
@@ -192,7 +191,6 @@ CustomerID,Name,Email,PurchaseAmount,PurchaseDate
 381,Customer_381,customer381@example.com,1137.0,2022-12-22
 385,Customer_385,customer385@example.com,559.0,2023-11-30
 388,Customer_388,customer388@example.com,517.0,2024-04-06
-389,Customer_389,customer389@example.com,1333.0,2024-05-24
 391,Customer_391,customer391@example.com,893.0,2023-11-20
 394,Customer_394,customer394@example.com,1429.0,2024-01-25
 395,Customer_395,customer395@example.com,846.0,2024-02-08
