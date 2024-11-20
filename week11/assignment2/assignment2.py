@@ -1,14 +1,16 @@
 import csv
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 
+# Initialize the class
 class CustomerManager:
     def __init__(self, filename):
         self.filename = filename
         self.customers = []
         self.load_data()
 
+    # Define function to load the dataset from the file
     def load_data(self):
-        """Load data from the CSV file into a list of dictionaries."""
         try:
             with open(self.filename, mode='r', newline='', encoding='utf-8') as file:
                 reader = csv.DictReader(file)
@@ -20,38 +22,37 @@ class CustomerManager:
         except Exception as e:
             print(f"Error loading file: {e}")
 
-    def display_high_value_customers(self, threshold=500):
-        """Display customers who made purchases above the given threshold."""
-        high_value_customers = [c for c in self.customers if c['PurchaseAmount'] > threshold]
-        for customer in high_value_customers:
+    # Define function to display customers who purchase more than $500
+    def display_high_spenders(self, threshold=500):
+        high_spenders = [c for c in self.customers if c['PurchaseAmount'] > threshold]
+        for customer in high_spenders:
             print(f"{customer['Name']} (${customer['PurchaseAmount']:.2f})")
 
+    # Define function to calculate and display average purchase amount
     def calculate_average_purchase(self):
-        """Calculate and display the average purchase amount."""
-        if not self.customers:
-            print("No customer data available.")
-            return
-        total = sum(c['PurchaseAmount'] for c in self.customers)
-        average = total / len(self.customers)
-        print(f"Average Purchase Amount: ${average:.2f}")
+        total = sum(cust['PurchaseAmount'] for cust in self.customers)
+        average = total / len(self.customers) if self.customers else 0
+        print(f"${average:.2f}")
         return average
 
+    # Define function to filter inactive customers
     def find_inactive_customers(self, months=6):
-        """List customers who have not made a purchase in the last X months."""
-        cutoff_date = datetime.now() - timedelta(days=months*30)
-        inactive_customers = [c for c in self.customers if c['PurchaseDate'] < cutoff_date]
-        for customer in inactive_customers:
-            print(f"{customer['Name']} (Last Purchase: {customer['PurchaseDate'].date()})")
+        cutoff_date = datetime.now() - relativedelta(months=months)
+        inactive_customers = [cust for cust in self.customers if cust['PurchaseDate'] < cutoff_date]
+        for cust in inactive_customers:
+            print(f"{cust['Name']} (Last Purchase: {cust['PurchaseDate'].date()})")
         return inactive_customers
 
+    # Define function to save filtered data
     def save_filtered_data(self, output_file, threshold=500, months=6):
-        """Save filtered data into a new CSV file."""
+
+        # Set cutoff_date as 6 months from current datetime
         cutoff_date = datetime.now() - timedelta(days=months * 30)
 
-        # Filter customers who are both high-value and inactive
+        # Filter customers who purchased more than 500 and and inactive for 6+ months
         filtered_customers = [
-            c for c in self.customers
-            if c['PurchaseAmount'] > threshold and c['PurchaseDate'] < cutoff_date
+            cust for cust in self.customers
+            if cust['PurchaseAmount'] > threshold and cust['PurchaseDate'] < cutoff_date
         ]
 
         # Save to output CSV
@@ -59,30 +60,28 @@ class CustomerManager:
             fieldnames = ['CustomerID', 'Name', 'Email', 'PurchaseAmount', 'PurchaseDate']
             writer = csv.DictWriter(file, fieldnames=fieldnames)
             writer.writeheader()
-            for customer in filtered_customers:
+            for cust in filtered_customers:
                 writer.writerow({
-                    'CustomerID': customer['CustomerID'],
-                    'Name': customer['Name'],
-                    'Email': customer['Email'],
-                    'PurchaseAmount': customer['PurchaseAmount'],
-                    'PurchaseDate': customer['PurchaseDate'].date()
+                    'CustomerID': cust['CustomerID'],
+                    'Name': cust['Name'],
+                    'Email': cust['Email'],
+                    'PurchaseAmount': cust['PurchaseAmount'],
+                    'PurchaseDate': cust['PurchaseDate'].date()
                 })
-        print(f"Filtered data saved to {output_file}")
-
-
+        print(f"Suceessful! Results are saved to {output_file}")
 
 # Main Program Execution
 if __name__ == "__main__":
-    manager = CustomerManager('week11/assignment2/Costum_data.csv')
+    cm = CustomerManager('week11/assignment2/Costum_data.csv')
 
-    print("Customers with purchases above $500:")
-    manager.display_high_value_customers()
+    print("Customers who made purchases above $500:")
+    cm.display_high_spenders(500)
 
     print("\nAverage Purchase Amount:")
-    manager.calculate_average_purchase()
+    cm.calculate_average_purchase()
 
-    print("\nCustomers inactive for 6+ months:")
-    manager.find_inactive_customers()
+    print("\nCustomers who has not made purchase within the last 6 months:")
+    cm.find_inactive_customers()
 
     # Save filtered data to a new CSV
-    manager.save_filtered_data('week11/assignment2/output/filtered_customer_data.csv')
+    cm.save_filtered_data('week11/assignment2/output/filtered_customer_data.csv')
