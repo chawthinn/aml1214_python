@@ -80,7 +80,8 @@ class ToDoListManager:
         Adds a new task to the task list with a 'Pending' status.
         Parameters:
         - description (str): the description of the task to be added.
-        After a task is added to the list with status "Pending", the modified flag is set to True, and the program will prompt a success message that the task is added.
+        After a task is added to the list with status "Pending", the modified flag is set to True, 
+        and the program will prompt a success message that the task is added.
         """
         self.tasks.append({"description": description, "status": "Pending"})
         self.is_modified = True 
@@ -93,7 +94,8 @@ class ToDoListManager:
         Remove a task from the task list based on its index.
         Parameters:
         - index (int): the index of the task to be removed.
-        If the task index is valid, the task will be removed, and the modified flag will be set to True. Then, the program will prompt a success message that the task is removed.
+        If the task index is valid, the task will be removed, and the modified flag will be set to True. 
+        Then, the program will prompt a success message that the task is removed.
         If the task index is invalid, the program will prompt an error message.
         """
         if 0 <= index < len(self.tasks):
@@ -111,10 +113,13 @@ class ToDoListManager:
         Mark a task as 'Completed' based on its index.
         Parameters: 
         - index (int): the index of the task to be marked as 'Completed'.
-        If the task index is valid, the task status will be updated to 'Completed', and the modified flag will be set to True. Then, the program will prompt a success message that the task is marked as completed.
+        If the task index is valid, the task status will be updated to 'Completed', and 
+        the modified flag will be set to True. Then, the program will prompt a success message 
+        that the task is marked as completed.
         If the task index is invalid, the program will prompt an error message.
         """
         if 0 <= index < len(self.tasks):
+            description = self.tasks[index]["description"]
             self.tasks[index]["status"] = "Completed"
             self.is_modified = True
             print(f"Success! Task '{description}' marked as completed.")
